@@ -25,9 +25,11 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # Créer .env + générer clé + migrer
-RUN cp .env.example .env \
+RUN echo "APP_ENV=production" > .env \
+ && echo "APP_DEBUG=false" >> .env \
  && php artisan key:generate \
  && php artisan migrate --force
+
 
 
 # Port Render
