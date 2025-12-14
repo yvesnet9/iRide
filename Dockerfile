@@ -21,11 +21,14 @@ WORKDIR /var/www
 COPY . .
 
 # Installer dépendances PHP
+# Installer dépendances PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Générer clé + migrer
-RUN php artisan key:generate \
+# Créer .env + générer clé + migrer
+RUN cp .env.example .env \
+ && php artisan key:generate \
  && php artisan migrate --force
+
 
 # Port Render
 EXPOSE 10000
