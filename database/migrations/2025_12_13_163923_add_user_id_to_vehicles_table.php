@@ -7,15 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('vehicles', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->nullable()->after('id');
-        });
+        // Colonne déjà présente dans create_vehicles_table
     }
 
     public function down(): void
     {
-        Schema::table('vehicles', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-        });
+        // Rien à rollback
     }
 };
