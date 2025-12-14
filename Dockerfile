@@ -27,8 +27,9 @@ RUN composer install --no-dev --optimize-autoloader
 # Créer .env + générer clé + migrer
 RUN echo "APP_ENV=production" > .env \
  && echo "APP_DEBUG=false" >> .env \
- && php artisan key:generate --force
+ && php artisan key:generate --force \
  && php artisan migrate --force
+
 
 
 
