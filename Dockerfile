@@ -15,8 +15,9 @@ RUN apt-get update && apt-get install -y \
 COPY . .
 
 # Permissions nécessaires à Laravel + SQLite
-RUN chmod -R 775 storage bootstrap/cache database \
-    && chmod 664 database/database.sqlite
+RUN chmod -R ug+rwx storage bootstrap/cache
+
+
 
 # Exposer le port Render
 EXPOSE 10000
