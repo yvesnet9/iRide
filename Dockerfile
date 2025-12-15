@@ -1,30 +1,25 @@
 FROM php:8.2-cli
 
+# Dossier de travail
+WORKDIR /var/www/html
+
 # Dépendances système
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    sqlite3 \
     libsqlite3-dev \
-    libzip-dev \
-    zip \
-    curl \
-    && docker-php-ext-install pdo pdo_sqlite zip \
-    && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-install pdo pdo_sqlite
 
-# Installer Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Dossier de travail
-WORKDIR /var/www
-
-# Copier le projet
+# Copier TOUT le projet
 COPY . .
 
-# Installer dépendances PHP
-RUN composer install --no-dev --optimize-autoloader
+# Permissions nécessaires à Laravel + SQLite
+RUN chmod -R 775 storage bootstrap/cache database \
+    && chmod 664 database/database.sqlite
 
-# Port Render
+# Exposer le port Render
 EXPOSE 10000
 
-# Lancer Laravel
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# Lancer le serveur PHP
+CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
