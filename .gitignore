@@ -1,4 +1,62 @@
-node_modules
+# =========================
+# Laravel
+# =========================
+
+/vendor/
+node_modules/
+/public/storage
+/storage/*.key
+
 .env
 .env.*
+
+# =========================
+# Logs & cache
+# =========================
+
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/bootstrap/cache/*
+
+# =========================
+# SQLite (ignore tout SAUF le fichier de prod)
+# =========================
+
+*.sqlite
+*.sqlite3
+/database/*.sqlite
+/database/*.sqlite3
+
+# 👉 Exception : on garde la base SQLite de production
+!database/database.sqlite
+
+# =========================
+# IDE / OS
+# =========================
+
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# =========================
+# Tests / coverage
+# =========================
+
+/coverage/
+.phpunit.result.cache
+
+# =========================
+# Docker
+# =========================
+
+docker-compose.override.yml
+
+# =========================
+# Laravel Sail (inutile en prod)
+# =========================
+
+/vendor/laravel/sail/runtimes/*
 
