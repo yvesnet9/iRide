@@ -6,19 +6,23 @@ use App\Http\Controllers\IncidentController;
 
 /*
 |--------------------------------------------------------------------------
-| Test API (debug)
+| API – Test simple
 |--------------------------------------------------------------------------
+| Vérifie que l’API Laravel répond
 */
 Route::get('/test-api', function () {
     return response()->json([
-        'message' => 'API OK'
+        'status' => 'success',
+        'message' => 'API OK',
+        'timestamp' => now()->toDateTimeString(),
     ]);
 });
 
 /*
 |--------------------------------------------------------------------------
-| Healthcheck PostgreSQL
+| API – Healthcheck PostgreSQL (Neon / Render)
 |--------------------------------------------------------------------------
+| Affiche l’erreur réelle en cas d’échec (TEMPORAIRE)
 */
 Route::get('/health/db', function () {
     try {
@@ -26,20 +30,25 @@ Route::get('/health/db', function () {
 
         return response()->json([
             'status' => 'success',
-            'message' => 'PostgreSQL OK via Laravel'
+            'message' => 'PostgreSQL OK via Laravel',
+            'driver' => DB::connection()->getDriverName(),
+            'timestamp' => now()->toDateTimeString(),
         ]);
     } catch (\Throwable $e) {
         return response()->json([
             'status' => 'error',
-            'message' => $e->getMessage()
+            'error_class' => get_class($e),
+            'error_message' => $e->getMessage(),
+            'timestamp' => now()->toDateTimeString(),
         ], 500);
     }
 });
 
 /*
 |--------------------------------------------------------------------------
-| Incidents MongoDB (NoSQL)
+| API – Incidents (MongoDB)
 |--------------------------------------------------------------------------
+| Routes protégées par Sanctum
 */
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/incidents', [IncidentController::class, 'store']);
